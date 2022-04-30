@@ -11,6 +11,23 @@ submit.addEventListener('click',click)
 const searchbox = document.querySelector('.search-box');
 searchbox.addEventListener('keypress', setQuery);
 
+
+const success = position =>{
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=715c637277ab1070eb80acea16390637`)
+             .then(response => response.json())
+                .then(function(data){
+                    displayResults(data)
+                })
+}
+
+if (window.navigator.geolocation) {
+    window.navigator.geolocation.getCurrentPosition(success,console.log);
+   }
+
+
+
 function click() {
     getResults(searchbox.value)
 }
@@ -22,7 +39,7 @@ function setQuery(evt) {
 }
 function getResults(query) {
    // var s = `${api.base}weather?lat=35&lon=139&appid=${api.key}`;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metruc&APPID=715c637277ab1070eb80acea16390637`).then(function(response){
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&APPID=715c637277ab1070eb80acea16390637`).then(function(response){
     response.json().then(function(data) {
         displayResults(data);
     });
@@ -31,6 +48,10 @@ function getResults(query) {
 });
 }
 
+
+
+   
+   
 function displayResults(weather) {
     let city = document.querySelector('.location .city');
   city.innerText = `${weather.name}`;
@@ -40,7 +61,7 @@ function displayResults(weather) {
     date.innerText = dateBuilder(now);
 
     let temp = document.querySelector('.current .temp');
-    temperature = Math.round(weather.main.temp - 273.15)
+    temperature = Math.round(weather.main.temp)
     temp.innerHTML = `${temperature}<span>°c</span>`;
   
     let weather_el = document.querySelector('.current .weather');
@@ -63,6 +84,8 @@ function dateBuilder(d) {
   
     return `${day} ${date} ${month} ${year}`;
 }
+
+
 /////////////
 //////////
 //////

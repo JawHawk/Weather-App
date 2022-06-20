@@ -15,10 +15,11 @@ searchbox.addEventListener('keypress', setQuery);
 const success = position =>{
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=715c637277ab1070eb80acea16390637`)
+          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&APPID=715c637277ab1070eb80acea16390637`)
              .then(response => response.json())
                 .then(function(data){
                     displayResults(data)
+                    console.log(data)
                 })
 }
 
@@ -61,7 +62,7 @@ function displayResults(weather) {
     date.innerText = dateBuilder(now);
 
     let temp = document.querySelector('.current .temp');
-    temperature = Math.round(weather.main.temp)
+    temperature = (weather.main.temp).toFixed(1)
     temp.innerHTML = `${temperature}<span>°c</span>`;
   
     let weather_el = document.querySelector('.current .weather');
@@ -85,18 +86,3 @@ function dateBuilder(d) {
     return `${day} ${date} ${month} ${year}`;
 }
 
-
-/////////////
-//////////
-//////
-///////
-/////////////////
-/////////////////////
-/////////////////////
-///////////////////////////
-/////////////////
-///////////////////////////////
-////////////////////////////
-/////////////////////////////////////////
-////////////////////////////////
-//////////////////////////
